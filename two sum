@@ -1,0 +1,59 @@
+#include <stdio.h>
+#include <stdlib.h>
+struct HashNode {
+    int key;
+    int value;
+    struct HashNode* next;
+};
+int hash(int key, int size) {
+    int h = key % size;
+    return h < 0 ? h + size : h;
+}
+void put(struct HashNode** table, int size, int key, int value) {
+    int idx = hash(key, size);
+    struct HashNode* newNode = (struct HashNode*)malloc(sizeof(struct HashNode));
+    newNode->key = key;
+    newNode->value = value;
+    newNode->next = table[idx];
+    table[idx] = newNode;
+}
+int get(struct HashNode** table, int size, int key) {
+    int idx = hash(key, size);
+    struct HashNode* curr = table[idx];
+    while (curr != NULL) {
+        if (curr->key == key) {
+            return curr->value;
+        }
+        curr = curr->next;
+    }
+    return -1;
+}
+
+int* twoSum(int* nums, int numsSize, int target, int* returnSize) {
+    *returnSize = 2;
+    int* result = (int*)malloc(2 * sizeof(int));
+    int tableSize = numsSize * 2;
+    struct HashNode** table = (struct HashNode**)calloc(tableSize, sizeof(struct HashNode*));
+    for (int i = 0; i < numsSize; i++) {
+        int complement = target - nums[i];
+        int complementIdx = get(table, tableSize, complement);
+        if (complementIdx != -1) {
+            result[0] = complementIdx;
+            result[1] = i;
+            for (int j = 0; j < tableSize; j++) {
+                struct HashNode* curr = table[j];
+                while (curr != NULL) {
+                    struct HashNode* temp = curr;
+                    curr = curr->next;
+                    free(temp);
+                }
+            }
+            free(table);
+            return result;
+        }
+        put(table, tableSize, nums[i], i);
+    }
+    free(table);
+    *returnSize = 0;
+    return NULL;
+}
