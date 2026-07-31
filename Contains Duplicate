@@ -1,0 +1,37 @@
+#include <stdbool.h>
+#include <stdlib.h>
+
+
+struct Element {
+    int val;
+    int index;
+};
+int compare(const void *a, const void *b) {
+    struct Element *e1 = (struct Element *)a;
+    struct Element *e2 = (struct Element *)b;
+    if (e1->val < e2->val) return -1;
+    if (e1->val > e2->val) return 1;
+    if (e1->index < e2->index) return -1;
+    if (e1->index > e2->index) return 1;
+    return 0;
+}
+bool containsNearbyDuplicate(int* nums, int numsSize, int k) {
+    if (numsSize <= 1 || k <= 0) return false;
+    struct Element* arr = (struct Element*)malloc(numsSize * sizeof(struct Element));
+    if (arr == NULL) return false;
+    for (int i = 0; i < numsSize; i++) {
+        arr[i].val = nums[i];
+        arr[i].index = i;
+    }
+    qsort(arr, numsSize, sizeof(struct Element), compare);
+    for (int i = 0; i < numsSize - 1; i++) {
+        if (arr[i].val == arr[i + 1].val) {
+            if (abs(arr[i].index - arr[i + 1].index) <= k) {
+                free(arr);
+                return true;
+            }
+        }
+    }
+    free(arr);
+    return false;
+}
