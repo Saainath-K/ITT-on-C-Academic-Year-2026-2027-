@@ -1,0 +1,35 @@
+#include <string>
+#include <vector>
+
+class Solution {
+public:
+    bool isIsomorphic(std::string s, std::string t) {
+        // Base case: strings of different lengths cannot be isomorphic
+        if (s.length() != t.length()) return false;
+        
+        // Fixed-size arrays for ASCII characters (O(1) space)
+        int map_s_to_t[256] = {0};
+        int map_t_to_s[256] = {0};
+        
+        for (int i = 0; i < s.length(); ++i) {
+            char char_s = s[i];
+            char char_t = t[i];
+            
+            // Check if s[i] has already been mapped to something else
+            if (map_s_to_t[char_s] != 0 && map_s_to_t[char_s] != char_t) {
+                return false;
+            }
+            
+            // Check if t[i] has already been mapped to something else
+            if (map_t_to_s[char_t] != 0 && map_t_to_s[char_t] != char_s) {
+                return false;
+            }
+            
+            // Establish the bidirectional mapping
+            map_s_to_t[char_s] = char_t;
+            map_t_to_s[char_t] = char_s;
+        }
+        
+        return true;
+    }
+};
