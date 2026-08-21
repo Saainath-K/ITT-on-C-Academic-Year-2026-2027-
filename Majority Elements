@@ -1,0 +1,26 @@
+#include <vector>
+
+class Solution {
+public:
+    int majorityElement(std::vector<int>& nums) {
+        int candidate = 0;
+        int count = 0;
+        
+        for (int num : nums) {
+            // Step 1: Assign a new candidate if count drops to 0
+            if (count == 0) {
+                candidate = num;
+            }
+            
+            // Step 2: Update the count based on the current element
+            if (num == candidate) {
+                count++;
+            } else {
+                count--;
+            }
+        }
+        
+        // The problem guarantees that a majority element always exists
+        return candidate;
+    }
+};
