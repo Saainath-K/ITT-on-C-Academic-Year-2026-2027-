@@ -1,0 +1,61 @@
+#include <string>
+#include <vector>
+#include <climits>
+
+class Solution {
+public:
+    std::string minWindow(std::string s, std::string t) {
+        if (s.empty() || t.empty() || s.length() < t.length()) return "";
+
+        // Track frequencies of characters in 't' and the current window
+        std::vector<int> targetMap(128, 0);
+        std::vector<int> windowMap(128, 0);
+
+        for (char c : t) {
+            targetMap[c]++;
+        }
+
+        // Count how many unique characters in 't' are fully satisfied
+        int required = 0;
+        for (int count : targetMap) {
+            if (count > 0) required++;
+        }
+
+        int left = 0, right = 0;
+        int formed = 0; // Tracks unique characters fully satisfied in current window
+        
+        int minLen = INT_MAX;
+        int startIdx = 0;
+
+        while (right < s.length()) {
+            char c = s[right];
+            windowMap[c]++;
+
+            // If the character count matches the target frequency, increment formed
+            if (targetMap[c] > 0 && windowMap[c] == targetMap[c]) {
+                formed++;
+            }
+
+            // Try to shrink the window from the left while it remains valid
+            while (left <= right && formed == required) {
+                char leftChar = s[left];
+
+                // Save the smallest window parameters
+                if (right - left + 1 < minLen) {
+                    minLen = right - left + 1;
+                    startIdx = left;
+                }
+
+                // Remove the leftmost character from the window tracking
+                windowMap[leftChar]--;
+                if (targetMap[leftChar] > 0 && windowMap[leftChar] < targetMap[leftChar]) {
+                    formed--;
+                }
+                left++;
+            }
+            right++;
+        }
+
+        return minLen == INT_MAX ? "" : s.substr(startIdx, minLen);
+    }
+};
