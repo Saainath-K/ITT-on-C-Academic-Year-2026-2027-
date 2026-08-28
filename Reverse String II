@@ -1,0 +1,21 @@
+#include <string>
+#include <algorithm>
+
+class Solution {
+public:
+    std::string reverseStr(std::string s, int k) {
+        int n = s.length();
+        
+        // Loop through the string in steps of 2k
+        for (int i = 0; i < n; i += 2 * k) {
+            // Find the end boundary for the reversal range.
+            // If fewer than k characters remain, pick 'n' to reverse all of them.
+            int end = std::min(i + k, n);
+            
+            // Reverse the first k characters of the current 2k block
+            std::reverse(s.begin() + i, s.begin() + end);
+        }
+        
+        return s;
+    }
+};
