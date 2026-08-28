@@ -1,0 +1,20 @@
+class Solution {
+public:
+    ListNode *getIntersectionNode(ListNode *headA, ListNode *headB) {
+        // If either list is empty, they cannot intersect
+        if (headA == nullptr || headB == nullptr) return nullptr;
+        
+        ListNode* ptrA = headA;
+        ListNode* ptrB = headB;
+        
+        // Loop terminates when ptrA and ptrB meet (either at a node or at nullptr)
+        while (ptrA != ptrB) {
+            // Switch to head of the opposite list upon hitting the end
+            ptrA = (ptrA == nullptr) ? headB : ptrA->next;
+            ptrB = (ptrB == nullptr) ? headA : ptrB->next;
+        }
+        
+        // Returns either the intersection node or nullptr
+        return ptrA;
+    }
+};
