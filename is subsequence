@@ -1,0 +1,25 @@
+#include <string>
+
+class Solution {
+public:
+    bool isSubsequence(std::string s, std::string t) {
+        int sLen = s.length();
+        int tLen = t.length();
+        
+        int sPtr = 0; // Pointer for string s
+        int tPtr = 0; // Pointer for string t
+        
+        // Loop until we traverse the entirety of either string
+        while (sPtr < sLen && tPtr < tLen) {
+            // If characters match, move the s pointer forward
+            if (s[sPtr] == t[tPtr]) {
+                sPtr++;
+            }
+            // Always move the t pointer forward to search the next character
+            tPtr++;
+        }
+        
+        // If sPtr reached the end of s, then all characters were found in order
+        return sPtr == sLen;
+    }
+};
