@@ -1,0 +1,26 @@
+#include <vector>
+#include <algorithm>
+
+class Solution {
+public:
+    int findContentChildren(std::vector<int>& g, std::vector<int>& s) {
+        // Sort both the greed factors and cookie sizes
+        std::sort(g.begin(), g.end());
+        std::sort(s.begin(), s.end());
+        
+        int childPtr = 0;  // Tracks the current child we are trying to satisfy
+        int cookiePtr = 0; // Tracks the current cookie we are evaluating
+        
+        // Loop while there are still children and cookies left
+        while (childPtr < g.size() && cookiePtr < s.size()) {
+            // If the current cookie can satisfy the current child
+            if (s[cookiePtr] >= g[childPtr]) {
+                childPtr++; // Move to the next child (this one is content!)
+            }
+            cookiePtr++; // Always move to the next cookie
+        }
+        
+        // The index of childPtr corresponds exactly to the number of content children
+        return childPtr;
+    }
+};
