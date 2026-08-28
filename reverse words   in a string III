@@ -1,0 +1,23 @@
+#include <string>
+#include <algorithm>
+
+class Solution {
+public:
+    std::string reverseWords(std::string s) {
+        int n = s.length();
+        int wordStart = 0;
+        
+        for (int i = 0; i <= n; ++i) {
+            // Treat the end of the string or a space character as a word boundary
+            if (i == n || s[i] == ' ') {
+                // Reverse the discovered word in-place
+                std::reverse(s.begin() + wordStart, s.begin() + i);
+                
+                // The next word begins right after the space
+                wordStart = i + 1;
+            }
+        }
+        
+        return s;
+    }
+};
