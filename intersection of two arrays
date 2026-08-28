@@ -1,0 +1,22 @@
+#include <vector>
+#include <unordered_set>
+
+class Solution {
+public:
+    std::vector<int> intersection(std::vector<int>& nums1, std::vector<int>& nums2) {
+        // Insert all elements of nums1 into a hash set to filter duplicates
+        std::unordered_set<int> set1(nums1.begin(), nums1.end());
+        std::vector<int> result;
+        
+        // Iterate through nums2 and check if the element exists in set1
+        for (int num : nums2) {
+            if (set1.count(num)) {
+                result.push_back(num);
+                // Remove the element from the set so it isn't added to the result again
+                set1.erase(num);
+            }
+        }
+        
+        return result;
+    }
+};
