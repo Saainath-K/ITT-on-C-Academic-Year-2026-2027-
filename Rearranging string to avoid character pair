@@ -1,0 +1,25 @@
+#include <string>
+#include <algorithm>
+
+class Solution {
+public:
+    std::string rearrangeString(std::string s, char x, char y) {
+        std::string countY = "";
+        std::string countOthers = "";
+        std::string countX = "";
+        
+        // Group characters based on whether they match 'y', 'x', or neither
+        for (char c : s) {
+            if (c == y) {
+                countY += c;
+            } else if (c == x) {
+                countX += c;
+            } else {
+                countOthers += c;
+            }
+        }
+        
+        // Concatenate in order: all 'y's first, then others, then all 'x's
+        return countY + countOthers + countX;
+    }
+};
