@@ -1,0 +1,30 @@
+class Solution(object):
+    def shortestBeautifulSubstring(self, s, k):
+        # Gather all indices of '1's
+        ones = [i for i, char in enumerate(s) if char == '1']
+        
+        # If there are fewer than k '1's, no beautiful substring exists
+        if len(ones) < k:
+            return ""
+        
+        min_len = float('inf')
+        ans = ""
+        
+        # Check every valid window containing exactly k '1's
+        for i in range(len(ones) - k + 1):
+            start = ones[i]
+            end = ones[i + k - 1]
+            length = end - start + 1
+            
+            # Slice the candidate substring
+            candidate = s[start:end + 1]
+            
+            # Compare length and lexicographical order
+            if length < min_len:
+                min_len = length
+                ans = candidate
+            elif length == min_len:
+                if candidate < ans:
+                    ans = candidate
+                    
+        return ans
