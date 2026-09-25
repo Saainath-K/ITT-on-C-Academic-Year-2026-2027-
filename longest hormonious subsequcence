@@ -1,0 +1,28 @@
+#include <vector>
+#include <unordered_map>
+#include <algorithm>
+
+class Solution {
+public:
+    int findLHS(std::vector<int>& nums) {
+        std::unordered_map<int, int> counts;
+        
+        // Count the frequency of each number
+        for (int num : nums) {
+            counts[num]++;
+        }
+        
+        int longest_subsequence = 0;
+        
+        // Check each unique number in the map
+        for (auto const& [num, count] : counts) {
+            // Check if the consecutive number (num + 1) exists
+            if (counts.find(num + 1) != counts.end()) {
+                int current_length = count + counts[num + 1];
+                longest_subsequence = std::max(longest_subsequence, current_length);
+            }
+        }
+        
+        return longest_subsequence;
+    }
+};
