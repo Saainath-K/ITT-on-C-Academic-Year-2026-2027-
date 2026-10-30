@@ -1,0 +1,33 @@
+int cmp(const void *a, const void *b) {
+    return *(int *)a - *(int *)b;
+}
+
+int timeRequiredToBuy(int* tickets, int ticketsSize, int k) {
+    if (k < 0 || k >= ticketsSize) {
+        return -1; // Invalid position
+    }
+    
+    int n = ticketsSize;
+    int k_th = tickets[k];
+    int time = 0;
+
+    /* After k_th tickets is empty, no more tickets could be sold after that */
+    for (int i = k + 1; i < ticketsSize; ++i) {
+        time -= (tickets[i] >= k_th);
+    }
+
+    qsort(tickets, ticketsSize, sizeof(int), cmp);
+
+    int prev = 0;
+    for (int i = 0; i < ticketsSize; ++i) {
+        if (tickets[i] > k_th) {
+            break;
+        }
+
+        time += (tickets[i] - prev) * n;
+        --n;
+        prev = tickets[i];
+    }
+
+    return time;
+}
